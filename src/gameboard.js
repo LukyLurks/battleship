@@ -50,8 +50,13 @@ const GameBoardProto = {
     });
     return board;
   },
+  wasAttackedAt: function (x, y) {
+    return this.attackedAt.some(
+      ([xAttacked, yAttacked]) => x === xAttacked && y === yAttacked
+    );
+  },
   receiveAttack: function (xTarget, yTarget) {
-    if (this.attackedAt.includes([xTarget, yTarget])) {
+    if (this.wasAttackedAt(xTarget, yTarget)) {
       console.warn('This cell was already attacked');
       return this;
     }

@@ -108,6 +108,14 @@ describe('A GameBoard', () => {
     expect(boardHitOnce.attackedAt).toContainEqual(attackedCoordinates);
   });
 
+  test("doesn't attack a previously attacked spot", () => {
+    const boardAfterFirstAttack = testBoard.receiveAttack(0, 0);
+    const boardRefusingSameAttack = testBoard
+      .receiveAttack(0, 0)
+      .receiveAttack(0, 0);
+    expect(boardRefusingSameAttack).toEqual(boardAfterFirstAttack);
+  });
+
   test('Tells if all the placedShips have sunk', () => {
     const boardSunkAllShips = testBoard
       .addShip(testShip, 0, 0, true)
