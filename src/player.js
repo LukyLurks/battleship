@@ -7,31 +7,10 @@ const Player = function (ownBoard, enemyBoard) {
 };
 
 const PlayerProto = {
-  attack: function () {
-    let coordinates = null;
-    while (!isAttackValid((coordinates = getAttackCoordinates())));
-    return this.enemyBoard.receiveAttack(coordinates);
+  attack: function (x, y) {
+    return this.enemyBoard.receiveAttack(x, y);
   },
 };
-
-function isAttackValid(x, y) {
-  const { size, attackedAt } = this.enemyBoard;
-  if (x < 0 || y < 0 || x >= size || y >= size) return false;
-
-  const alreadyAttacked = attackedAt.some(
-    ([xShot, yShot]) => x === xShot && y === yShot
-  );
-  if (alreadyAttacked) return false;
-
-  return true;
-}
-
-function getAttackCoordinates() {
-  let [x, y] = [null, null];
-  x = Number(prompt('enter row number', 0));
-  y = Number(prompt('enter column number', 0));
-  return [x, y];
-}
 
 function Computer(ownBoard, enemyBoard) {
   return Object.assign(

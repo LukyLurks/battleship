@@ -1,7 +1,7 @@
 import { Computer } from './player';
 import { GameBoard } from './gameboard';
 
-describe('The computer', () => {
+describe('Computer.attackRandom()', () => {
   const [testOwnBoard, testEnemyBoard] = [GameBoard(2), GameBoard(2)];
   const testComputer = Computer(testOwnBoard, testEnemyBoard);
 

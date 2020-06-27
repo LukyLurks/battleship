@@ -1,29 +1,62 @@
 import { Ship } from './ship';
 
-describe('A ship', () => {
-  test('has an integer >= 1 as length', () => {
-    expect(Ship(4)).toHaveProperty('length', 4);
-    expect(Ship(3.9)).toHaveProperty('length', 3);
+describe('Ship factory and methods', () => {
+  const testShip = Ship(2);
+
+  describe('Ship()', () => {
+    describe('Happy path', () => {
+      test('takes an integer >= 1 as length', () => {
+        expect(Ship(2)).toHaveProperty('length', 2);
+      });
+    });
+
+    describe('Unhappy path', () => {
+      test('floors decimal lengths >= 1', () => {
+        expect(Ship(3.9)).toHaveProperty('length', 3);
+      });
+
+      test('returns null otherwise', () => {
+        expect(Ship(-2)).toBeNull();
+        expect(Ship()).toBeNull();
+        expect(Ship('hi')).toBeNull();
+      });
+    });
   });
 
-  test('has a length 1 if not given a number >= 1', () => {
-    expect(Ship()).toHaveProperty('length', 1);
-    expect(Ship('hi')).toHaveProperty('length', 1);
+  describe('hit()', () => {
+    describe('Happy path', () => {
+      test('sets the right damagedAt index to true', () => {
+        const hitShip = testShip.hit(1);
+        expect(hitShip.damagedAt).toEqual([false, true]);
+      });
+    });
+    describe('Unhappy path', () => {
+      test('floors decimal values', () => {
+        const hitAtDecimal = testShip.hit(0.4);
+        expect(hitAtDecimal.damagedAt).toEqual([true, false]);
+      });
+      test("doesn't change anything with otherwise invalid index", () => {
+        const hitNegativeIndex = testShip.hit(-2);
+        const hitNowhere = testShip.hit();
+        const hitStrings = testShip.hit('hi');
+        const hitOutOfRange = testShip.hit(42);
+        const expected = [false, false];
+        expect(hitNegativeIndex.damagedAt).toEqual(expected);
+        expect(hitNowhere.damagedAt).toEqual(expected);
+        expect(hitStrings.damagedAt).toEqual(expected);
+        expect(hitOutOfRange.damagedAt).toEqual(expected);
+      });
+    });
   });
 
-  test('has a damagedAt property', () => {
-    expect(Ship(2)).toHaveProperty('damagedAt', [false, false]);
-  });
+  describe('isSunk()', () => {
+    test("returns false if the ship isn't hit everywhere", () => {
+      expect(testShip.isSunk()).toBe(false);
+    });
 
-  test('has hit() method to mark a position as hit', () => {
-    const testShip = Ship(2);
-    expect(testShip.hit(1)).toHaveProperty('damagedAt', [false, true]);
-  });
-
-  test('has isSunk() method', () => {
-    let shipToSink = Ship(3);
-    expect(shipToSink.isSunk()).toBe(false);
-    shipToSink = shipToSink.hit(0).hit(1).hit(2);
-    expect(shipToSink.isSunk()).toBe(true);
+    test('returns true if the ship is hit everywhere', () => {
+      let sunkShip = testShip.hit(0).hit(1);
+      expect(sunkShip.isSunk()).toBe(true);
+    });
   });
 });
