@@ -112,7 +112,6 @@ describe('GameBoard factory and methods', () => {
       test("doesn't add otherwise", () => {
         const boardInvalidPositionings = testBoard
           .addShip(testShip, -1, 0, false)
-          .addShip(testShip, '1', 0, true)
           .addShip(testShip, 2, 0, 1);
         expect(boardInvalidPositionings.placedShips).toEqual([]);
       });
@@ -136,9 +135,12 @@ describe('GameBoard factory and methods', () => {
       });
 
       test('records all attacks received', () => {
-        const boardHitOnce = testBoard.receiveAttack(2, 3);
-        const attackedCoordinates = [2, 3];
-        expect(boardHitOnce.attackedAt).toContainEqual(attackedCoordinates);
+        const boardHitTwice = testBoard.receiveAttack(2, 3).receiveAttack(0, 0);
+        const attackedCoordinates = [
+          [2, 3],
+          [0, 0],
+        ];
+        expect(boardHitTwice.attackedAt).toEqual(attackedCoordinates);
       });
     });
 
@@ -163,9 +165,9 @@ describe('GameBoard factory and methods', () => {
   });
 
   describe('isAllSunk()', () => {
-    test("returns false if at least one ship hasn't sank", () => {
-      const boardWithAliveShip = testBoard.addShip(testShip, 0, 0, true);
-      expect(boardWithAliveShip.isAllSunk()).toBe(false);
+    test("returns false if at least one ship hasn't sunk", () => {
+      const boardWithAfloatShip = testBoard.addShip(testShip, 0, 0, true);
+      expect(boardWithAfloatShip.isAllSunk()).toBe(false);
     });
 
     test('returns true if all ships on the board sank', () => {

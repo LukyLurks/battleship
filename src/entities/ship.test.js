@@ -5,14 +5,14 @@ describe('Ship factory and methods', () => {
 
   describe('Ship()', () => {
     describe('Happy path', () => {
-      test('takes an integer >= 1 as length', () => {
-        expect(Ship(2)).toHaveProperty('length', 2);
+      test('takes an integer >= 1 as size', () => {
+        expect(Ship(2)).toHaveProperty('size', 2);
       });
     });
 
     describe('Unhappy path', () => {
-      test('floors decimal lengths >= 1', () => {
-        expect(Ship(3.9)).toHaveProperty('length', 3);
+      test('floors decimal sizes >= 1', () => {
+        expect(Ship(3.9)).toHaveProperty('size', 3);
       });
 
       test('returns null otherwise', () => {

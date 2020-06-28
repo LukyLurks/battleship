@@ -1,11 +1,10 @@
-const Ship = function (length) {
-  if (!isLengthValid(length)) {
-    console.warn(`Ship() length "${length}" invalid`);
+const Ship = function (size) {
+  if (!isSizeValid(size)) {
     return null;
   }
   const fields = {
-    length: Math.floor(length),
-    damagedAt: Array(Math.floor(length)).fill(false),
+    size: Math.floor(size),
+    damagedAt: Array(Math.floor(size)).fill(false),
   };
   return Object.assign(Object.create(ShipProto), fields);
 };
@@ -13,14 +12,13 @@ const Ship = function (length) {
 const ShipProto = {
   deepClone: function () {
     const fields = {
-      length: this.length,
+      size: this.size,
       damagedAt: Array.from(this.damagedAt),
     };
     return Object.assign(Object.create(ShipProto), fields);
   },
   hit: function (position) {
-    if (!isPositionValid(position, this.length)) {
-      console.warn(`hit() position "${position}" invalid`);
+    if (!isPositionValid(position, this.size)) {
       return this;
     }
     const damagedShip = this.deepClone();
@@ -32,12 +30,12 @@ const ShipProto = {
   },
 };
 
-function isLengthValid(length) {
-  return typeof length === 'number' && length >= 1;
+function isSizeValid(size) {
+  return typeof size === 'number' && size >= 1;
 }
 
-function isPositionValid(position, shipLength) {
-  return typeof position === 'number' && position >= 0 && position < shipLength;
+function isPositionValid(position, shipSize) {
+  return typeof position === 'number' && position >= 0 && position < shipSize;
 }
 
 export { Ship };
