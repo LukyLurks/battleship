@@ -1,0 +1,71 @@
+.GameStatus {
+  margin-bottom: 1vmin;
+}
+
+.PlayerArea {
+  display: flex;
+  flex-flow: column nowrap;
+  background: hsla(0, 0%, 50%, 0.2);
+}
+
+.playerShips {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  align-content: center;
+  margin: 1vmin;
+}
+
+.playerOneArea .playerShips .placed {
+  background-color: darkred;
+}
+
+.board {
+  display: grid;
+  grid-template-rows: repeat(10, 1fr);
+  grid-template-columns: repeat(10, 1fr);
+  height: 100%;
+  max-height: 47vmin;
+  max-width: 47vmin;
+  background: repeating-linear-gradient(20deg, darkblue, navy, darkblue 12%);
+  border: 3px solid hsl(0, 0%, 50%, 0.7);
+}
+
+.cell {
+  border-top: 1px solid hsla(0, 0%, 50%, 0.4);
+  border-left: 1px solid hsla(0, 0%, 50%, 0.4);
+  width: 4.5vmin;
+  height: 4.5vmin;
+  transition: all 0.06s ease-in-out;
+}
+
+.playerTwoArea .cell:hover,
+.canBePlaced {
+  background-color: hsla(90, 100%, 50%, 0.4);
+}
+
+.playerOneArea .cellWithShip {
+  background-color: darkturquoise;
+}
+
+.PlayerArea .cell.attacked {
+  background-color: grey;
+}
+
+.cellWithShip.attacked {
+  background: radial-gradient(yellow, orange, tomato 80%);
+}
+
+.cellWithShip.attacked.sunk {
+  box-shadow: 0 0 7px 3px red;
+  background-color: crimson;
+  z-index: 1000;
+}
+
+.cell[col="9"] {
+  border-right: 1px solid hsla(0, 0%, 50%, 0.5);
+}
+
+.cell[row="9"] {
+  border-bottom: 1px solid hsla(0, 0%, 50%, 0.5);
+}

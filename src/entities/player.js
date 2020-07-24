@@ -1,9 +1,10 @@
-import helpers from '../utils/helpers';
+import utils from "../utils";
 
-const Player = function (ownBoard, enemyBoard) {
+const Player = function (ownBoard, enemyBoard, name) {
   const fields = {
     ownBoard,
     enemyBoard,
+    name,
   };
   return Object.assign(Object.create(PlayerProto), fields);
 };
@@ -15,18 +16,21 @@ const PlayerProto = {
   },
 };
 
-function Computer(ownBoard, enemyBoard) {
+function Computer(ownBoard, enemyBoard, name) {
   return Object.assign(
     Object.create(ComputerProto),
-    Player(ownBoard, enemyBoard)
+    Player(ownBoard, enemyBoard, name)
   );
 }
 
 const ComputerProto = {
   attackRandom: function () {
-    const coordinates = helpers.findPointToAttack(this.enemyBoard);
-    this.enemyBoard = this.enemyBoard.receiveAttack(...coordinates);
-    return this;
+    return utils.findPointToAttack(this.enemyBoard);
+  },
+
+  addShipRandom: function (ship) {
+    const positioning = utils.findSpotForShip(ship, this.ownBoard);
+    return this.ownBoard.addShip(ship, ...positioning);
   },
 };
 

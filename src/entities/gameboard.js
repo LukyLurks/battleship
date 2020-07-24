@@ -1,8 +1,7 @@
-import checks from '../utils/checks';
-import helpers from '../utils/helpers';
+import utils from "../utils";
 
 const GameBoard = function (size) {
-  if (!checks.isValidSize(size)) {
+  if (!utils.isValidSize(size)) {
     return null;
   }
   const fields = {
@@ -25,22 +24,30 @@ const GameBoardProto = {
   },
 
   addShip: function (ship, ...positioning) {
-    if (!checks.canAddShip(this, ...arguments)) return this;
+    if (!utils.canAddShip(this, ...arguments)) return this;
 
     const board = this.deepClone();
     board.placedShips.push({
       ship,
-      coordinates: helpers.getNewShipCoordinates(...arguments),
+      coordinates: utils.getNewShipCoordinates(...arguments),
     });
     return board;
   },
 
-  receiveAttack: function (...coordinates) {
-    if (!checks.canReceiveAttack(this, ...coordinates)) return this;
+  removeShip: function (name) {
+    const board = this.deepClone();
+    board.placedShips = board.placedShips.filter(
+      ({ ship }) => ship.name !== name
+    );
+    return board;
+  },
 
-    const targetShip = helpers.findTargetShip(this, ...coordinates);
+  receiveAttack: function (...coordinates) {
+    if (!utils.canReceiveAttack(this, ...coordinates)) return this;
+
+    const targetShip = utils.findTargetShip(this, ...coordinates);
     if (targetShip !== undefined) {
-      targetShip.ship = helpers.hitPosition(targetShip, ...coordinates);
+      targetShip.ship = utils.hitPosition(targetShip, ...coordinates);
     }
 
     return this.recordAttack(coordinates);
